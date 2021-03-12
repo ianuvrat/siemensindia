@@ -305,6 +305,21 @@ def update_table(contents, filename, chsn_val):
                 virtualization=False,
                 export_columns='all',  # 'all' or 'visible
                 export_format='xlsx',  # 'csv or 'none' or 'xlsx'
+
+                tooltip_delay=0,  # 1000
+                tooltip_duration=None,  # 2000
+                # column headers
+                tooltip_header={
+                    'Total Purchase Orders': '▲ = Ascending, ▼ = Descending',
+                    'Difference': '▲ = Ascending, ▼ = Descending',
+                    'Amount': '▲ = Ascending, ▼ = Descending',
+                    'Stock': '▲ = Ascending, ▼ = Descending',
+                    'Demand': '▲ = Ascending, ▼ = Descending',
+                    'Price': 'Moving Avg. Price',
+                    'Days to Alert': '▲ = Ascending, ▼ = Descending',
+                },
+
+
                 style_data_conditional=([
 
                     # 'filter_query', 'column_id', 'column_type', 'row_index', 'state', 'column_editable'.
@@ -361,6 +376,19 @@ def update_table(contents, filename, chsn_val):
                 export_columns='all',  # 'all' or 'visible
                 export_format='xlsx',  # 'csv or 'none' or 'xlsx'
 
+                tooltip_delay=0,  # 1000
+                tooltip_duration=None,  # 2000
+                # column headers
+                tooltip_header={
+                    'Total Purchase Orders': '▲ = Ascending, ▼ = Descending',
+                    'Difference': '▲ = Ascending, ▼ = Descending',
+                    'Amount': '▲ = Ascending, ▼ = Descending',
+                    'Stock': '▲ = Ascending, ▼ = Descending',
+                    'Demand': '▲ = Ascending, ▼ = Descending',
+                    'Price': 'Moving Avg. Price',
+                    'Days to Alert': '▲ = Ascending, ▼ = Descending',
+                },
+
                 style_data_conditional=([
 
                     # 'filter_query', 'column_id', 'column_type', 'row_index', 'state', 'column_editable'.
@@ -416,6 +444,19 @@ def update_table(contents, filename, chsn_val):
                 virtualization=False,
                 export_columns='all',  # 'all' or 'visible
                 export_format='xlsx',  # 'csv or 'none' or 'xlsx'
+
+                tooltip_delay=0,  # 1000
+                tooltip_duration=None,  # 2000
+                # column headers
+                tooltip_header={
+                    'Total Purchase Orders': '▲ = Ascending, ▼ = Descending',
+                    'Difference': '▲ = Ascending, ▼ = Descending',
+                    'Amount': '▲ = Ascending, ▼ = Descending',
+                    'Stock': '▲ = Ascending, ▼ = Descending',
+                    'Demand': '▲ = Ascending, ▼ = Descending',
+                    'Price': 'Moving Avg. Price',
+                    'Days to Alert': '▲ = Ascending, ▼ = Descending',
+                },
 
                 style_data_conditional=([
 

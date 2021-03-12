@@ -336,7 +336,6 @@ def update_table(contents, filename):
 
                     id='datatable_id',
                     data=df.to_dict("records"),
-
                     columns=[
                         {'name': 'Material', 'id': 'Material', 'type': 'text', 'editable': False, 'selectable': True},
                         {'name': 'Plus/minus', 'id': 'Plus/minus', 'type': 'text', 'editable': False, "hideable": True,
@@ -365,6 +364,17 @@ def update_table(contents, filename):
                          'selectable': True},
 
                     ],
+
+                    tooltip_delay=0,  # 1000
+                    tooltip_duration=None,  # 2000
+                    # column headers
+                    tooltip_header={
+                        'Date': 'Delivery Date',
+                        'PGr': 'Purchasing Group',
+                        'Vendor': 'Vendor Code',
+                        'Vendor2': 'Vendor Name',
+                        'Days to Alert': '▲ = Ascending, ▼ = Descending',
+                    },
 
                     editable=True,  # allow editing of data inside all cells
                     filter_action="native",  # allow filtering of data by user ('native') or not ('none')
