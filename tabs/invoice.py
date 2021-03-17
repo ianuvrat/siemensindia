@@ -73,7 +73,7 @@ Generate Invoice QR Code""",
     ]),
 
     #4 DASH DATATABLE
-        dcc.Loading(children=[html.Div(id="qrdatatable_id", style={'width': '200vh', 'height': '80vh'})],
+    dcc.Loading(children=[html.Div(id="qrdatatable_id", style={'width': '200vh', 'height': '80vh'})],
                                         color="#119DFF", type="cube", fullscreen=False),
 
 
@@ -121,8 +121,6 @@ def update_table(contents, filename):
 
         df = parse_data(contents, filename)
         dff= df
-        print(dff.info())
-        print('hello')
         t=  [dash_table.DataTable(
                 id='qrdatatable_id',
                 columns=[{"name": i, "id": i} for i in dff.columns],
@@ -143,8 +141,8 @@ def update_table(contents, filename):
                 export_columns='all',  # 'all' or 'visible
                 export_format='xlsx',  # 'csv or 'none' or 'xlsx'
             )],
-
         return  t
+      
         data = dff
         qr.add_data(data)
         qr.make(fit=True)
