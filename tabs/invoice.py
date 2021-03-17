@@ -128,12 +128,14 @@ def update_table(contents, filename):
         qr.make(fit=True)
         img = qr.make_image(fill='black', back_color='white')
         #img.save('Desktop\\1.png')
-        img.save('invoice_QR.png')
+        #img.save('invoice_QR.png')
+        img.show()
 
-        return [dash_table.DataTable(
+
+        t=  [dash_table.DataTable(
                 id='qrdatatable_id',
-                data=dff.to_dict('records'),
                 columns=[{"name": i, "id": i} for i in dff.columns],
+                data=dff.to_dict('records'),
                 editable=False,  # allow editing of data inside all cells
                 filter_action="native",  # allow filtering of data by user ('native') or not ('none')
                 sort_action="native",  # enables data to be sorted per-column by user or not ('none')
@@ -150,3 +152,5 @@ def update_table(contents, filename):
                 export_columns='all',  # 'all' or 'visible
                 export_format='xlsx',  # 'csv or 'none' or 'xlsx'
             )],
+
+        return  t
