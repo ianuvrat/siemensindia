@@ -25,9 +25,9 @@ from app import app
 
 
 
-qr=qrcode.QRCode(version=1,
-                  box_size=10,
-                  border=5)
+# qr=qrcode.QRCode(version=1,
+#                   box_size=10,
+#                   border=5)
 
 colors = {"graphBackground": "#F5F5F5", "background": "#ffffff", "text": "#000000"}
 
@@ -123,7 +123,22 @@ def update_table(contents, filename):
         dff= df
         t=  [dash_table.DataTable(
                 id='qrdatatable_id',
-                columns=[{"name": i, "id": i} for i in dff.columns],
+                #columns=[{"name": i, "id": i} for i in dff.columns],
+                columns=[
+                    {'name': 'PO#', 'id': 'PO#', 'type': 'numeric', 'editable': False, 'selectable': True},
+                    {'name': 'ITEM#', 'id': 'ITEM#', 'type': 'numeric', 'editable': False, "hideable": True, "deletable": False, 'selectable': True},
+                    {'name': 'Document date', 'id': 'Document date', 'type': 'text', 'editable': False, 'selectable': True},
+                    {'name': 'Delivery Note/Invoice Reference', 'id': 'Delivery Note/Invoice Reference', 'type': 'text', 'editable': False, 'selectable': True},
+                    {'name': 'Bill of Lading', 'id': 'Bill of Lading', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
+                    {'name': 'HEADER TEXT', 'id': 'HEADER TEXT', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
+                    {'name': 'Qty in Delivery Note', 'id': 'Qty in Delivery Note', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
+                    {'name': 'Qty in Unit of Entry', 'id': 'Qty in Unit of Entry', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
+                    {'name': 'Text  in Where Tab', 'id': 'Text  in Where Tab', 'type': 'text', 'editable': False, 'selectable': True},
+                    {'name': 'STORAGE LOCATION', 'id': 'STORAGE LOCATION', 'type': 'text', 'editable': False, 'selectable': True},
+                    {'name': 'PLANT', 'id': 'PLANT', 'type': 'text', 'editable': False, 'selectable': True},
+                    {'name': 'Attachment Path', 'id': 'Attachment Path', 'type': 'datetime', 'editable': False, "hideable": True, "deletable": True, 'selectable': True},
+                    {'name': 'Create Note', 'id': 'Create Note', 'type': 'text', 'editable': False, "hideable": True, "deletable": True, 'selectable': True},
+                ],
                 data=dff.to_dict('records'),
                 editable=False,  # allow editing of data inside all cells
                 filter_action="native",  # allow filtering of data by user ('native') or not ('none')
@@ -143,10 +158,10 @@ def update_table(contents, filename):
             )],
         return  t
       
-        data = dff
-        qr.add_data(data)
-        qr.make(fit=True)
-        img = qr.make_image(fill='black', back_color='white')
-        # img.save('Desktop\\1.png')
-        # img.save('invoice_QR.png')
-        img.show()
+#         data = dff
+#         qr.add_data(data)
+#         qr.make(fit=True)
+#         img = qr.make_image(fill='black', back_color='white')
+#         # img.save('Desktop\\1.png')
+#         # img.save('invoice_QR.png')
+#         img.show()
