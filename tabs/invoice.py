@@ -121,17 +121,7 @@ def update_table(contents, filename):
 
         df = parse_data(contents, filename)
         dff= df
-        print(dff.info())
-        print('hello')
-        data = dff
-        qr.add_data(data)
-        qr.make(fit=True)
-        img = qr.make_image(fill='black', back_color='white')
-        #img.save('Desktop\\1.png')
-        #img.save('invoice_QR.png')
-        img.show()
-
-
+#        print(dff.info())
         t=  [dash_table.DataTable(
                 id='qrdatatable_id',
                 columns=[{"name": i, "id": i} for i in dff.columns],
@@ -154,3 +144,10 @@ def update_table(contents, filename):
             )],
 
         return  t
+        data = dff
+        qr.add_data(data)
+        qr.make(fit=True)
+        img = qr.make_image(fill='black', back_color='white')
+        #img.save('Desktop\\1.png')
+        #img.save('invoice_QR.png')
+        img.show()
