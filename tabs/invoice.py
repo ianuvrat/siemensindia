@@ -161,9 +161,10 @@ def update_table(contents, filename):
         qr.add_data(data)
         qr.make(fit=True)
         img = qr.make_image(fill='black', back_color='white')
+        print(img.show())
         # img.save('Desktop\\1.png')
         # img.save('invoice_QR.png')
-        img.show()
+        #img.show()
         
         return  t
       
