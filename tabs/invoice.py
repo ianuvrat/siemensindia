@@ -72,11 +72,6 @@ Generate Invoice QR Code""",
 
     ]),
 
-    html.Div(id="slideshow-container", children=[
-                            html.Div(id="image"),
-                            dcc.Interval(id='interval', interval=3000)
-                        ],style={'padding-bottom':'10px'}),
-
     #4 DASH DATATABLE
     dcc.Loading(children=[html.Div(id="qrdatatable_id", style={'width': '200vh', 'height': '80vh'})],
                                         color="#119DFF", type="cube", fullscreen=False),
@@ -155,35 +150,16 @@ def update_table(contents, filename):
         qr.make(fit=True)
         qr_img = qr.make_image(fill='black', back_color='white')
 
-        #print(img.show())
+        print(qr_img.show())
         #qr_img.save('1.png')
-        qr_img.save('assets/1.png')
+        # qr_img.save('assets/1.png')
 
         #img.save('assets/{}.jpg'.format(img))
 
-        #img.show()
+        qr_img.show()
 
         return t
 #---------------------------------------------------------------------------------------
 
-@app.callback(Output('image', 'children'),
-
-              [Input("upload-data", "contents"),
-               Input("upload-data", "filename"),
-               Input('interval', 'n_intervals')])
-def display_image(contents, filename, n):
-    if n == None or n % 5 == 1:
-        img = html.Img(src=app.get_asset_url('1.png'),)
-    elif n % 5 == 2:
-        img = html.Img(src=app.get_asset_url('1.png'))
-    # elif n % 5 == 3:
-    #     img = html.Img(src=app.get_asset_url('1.png'))
-    # elif n % 5 == 4:
-    #     img = html.Img(src=app.get_asset_url('1.png'))
-    # elif n % 5 == 0:
-    #     img = html.Img(src=app.get_asset_url('1.png'))
-    else:
-        img = "Wait for few secs.."
-    return img
 
 
