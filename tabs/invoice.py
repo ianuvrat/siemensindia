@@ -21,7 +21,7 @@ import dash_bootstrap_components as dbc
 import dash_extensions as de
 from dash import no_update
 
-from app import app
+from app import app, dbc
 
 
 
@@ -72,11 +72,14 @@ Generate Invoice QR Code""",
 
     ]),
 
+    html.Div(id="slideshow-container", children=[
+                            html.Div(id="image"),
+                            dcc.Interval(id='interval', interval=3000)
+                        ],style={'padding-bottom':'10px'}),
+
     #4 DASH DATATABLE
     dcc.Loading(children=[html.Div(id="qrdatatable_id", style={'width': '200vh', 'height': '80vh'})],
                                         color="#119DFF", type="cube", fullscreen=False),
-
-
 ], fluid= True)
 
 # ---------------------------------------------------------------------------------------
@@ -105,40 +108,30 @@ def parse_data(contents, filename):
 
 # Datatable callback
 @app.callback(
-    [Output("qrdatatable_id", "children")],
+    [Output("qrdatatable_id", "children"),
+     ],
+     #Output("qr-image", "src")],
 
      [Input("upload-data", "contents"),
-     Input("upload-data", "filename")],
+     Input("upload-data", "filename"),
+     ],
 )
 # Update datable
 def update_table(contents, filename):
 
     if contents is None or filename is None:  # Prevent callback trigger when not needed #
         raise PreventUpdate
+
     elif contents:
         contents = contents[0]
         filename = filename[0]
 
         df = parse_data(contents, filename)
         dff= df
+        print(dff.info())
         t=  [dash_table.DataTable(
                 id='qrdatatable_id',
                 columns=[{"name": i, "id": i} for i in dff.columns],
-#                 columns=[
-#                     {'name': 'PO#', 'id': 'PO#', 'type': 'numeric', 'editable': False, 'selectable': True},
-#                     {'name': 'ITEM#', 'id': 'ITEM#', 'type': 'numeric', 'editable': False, "hideable": True, "deletable": False, 'selectable': True},
-#                     {'name': 'Document date', 'id': 'Document date', 'type': 'text', 'editable': False, 'selectable': True},
-#                     {'name': 'Delivery Note/Invoice Reference', 'id': 'Delivery Note/Invoice Reference', 'type': 'text', 'editable': False, 'selectable': True},
-#                     {'name': 'Bill of Lading', 'id': 'Bill of Lading', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
-#                     {'name': 'HEADER TEXT', 'id': 'HEADER TEXT', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
-#                     {'name': 'Qty in Delivery Note', 'id': 'Qty in Delivery Note', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
-#                     {'name': 'Qty in Unit of Entry', 'id': 'Qty in Unit of Entry', 'type': 'text', 'editable': False, "hideable": True, 'selectable': True},
-#                     {'name': 'Text  in Where Tab', 'id': 'Text  in Where Tab', 'type': 'text', 'editable': False, 'selectable': True},
-#                     {'name': 'STORAGE LOCATION', 'id': 'STORAGE LOCATION', 'type': 'text', 'editable': False, 'selectable': True},
-#                     {'name': 'PLANT', 'id': 'PLANT', 'type': 'text', 'editable': False, 'selectable': True},
-#                     {'name': 'Attachment Path', 'id': 'Attachment Path', 'type': 'datetime', 'editable': False, "hideable": True, "deletable": True, 'selectable': True},
-#                     {'name': 'Create Note', 'id': 'Create Note', 'type': 'text', 'editable': False, "hideable": True, "deletable": True, 'selectable': True},
-#                 ],
                 data=dff.to_dict('records'),
                 editable=False,  # allow editing of data inside all cells
                 filter_action="native",  # allow filtering of data by user ('native') or not ('none')
@@ -156,16 +149,41 @@ def update_table(contents, filename):
                 export_columns='all',  # 'all' or 'visible
                 export_format='xlsx',  # 'csv or 'none' or 'xlsx'
             )],
-        
+
         data = dff
         qr.add_data(data)
         qr.make(fit=True)
-        img = qr.make_image(fill='black', back_color='white')
-        print(img.show())
-        # img.save('Desktop\\1.png')
-        # img.save('invoice_QR.png')
+        qr_img = qr.make_image(fill='black', back_color='white')
+
+        #print(img.show())
+        #qr_img.save('1.png')
+        qr_img.save('assets/1.png')
+
+        #img.save('assets/{}.jpg'.format(img))
+
         #img.show()
-        
-        return  t
-      
+
+        return t
+#---------------------------------------------------------------------------------------
+
+@app.callback(Output('image', 'children'),
+
+              [Input("upload-data", "contents"),
+               Input("upload-data", "filename"),
+               Input('interval', 'n_intervals')])
+def display_image(contents, filename, n):
+    if n == None or n % 5 == 1:
+        img = html.Img(src=app.get_asset_url('1.png'),)
+    elif n % 5 == 2:
+        img = html.Img(src=app.get_asset_url('1.png'))
+    # elif n % 5 == 3:
+    #     img = html.Img(src=app.get_asset_url('1.png'))
+    # elif n % 5 == 4:
+    #     img = html.Img(src=app.get_asset_url('1.png'))
+    # elif n % 5 == 0:
+    #     img = html.Img(src=app.get_asset_url('1.png'))
+    else:
+        img = "Wait for few secs.."
+    return img
+
 
