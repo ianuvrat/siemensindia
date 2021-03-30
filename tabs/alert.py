@@ -111,8 +111,8 @@ ADVANCE PAYMENT TRACKER""",
 
         dbc.Col([
             dcc.Markdown("""-----------------------------
-                            BPO APPROVALS ------> CORP. APPROVALS ------> ACTUAL PAYMENT ------> TRANSIT TIME ------> GRN OPERATION
-                                           15days                  10days                 15days               5days""")
+                BPO APPROVALS ------> CORP. APPROVALS ------> ACTUAL PAYMENT ------> TRANSIT TIME ------> GRN OPERATION ------ Delivery
+                               15days                  10days                 15days               15days                5days""")
         
 
             # className="text-center font-weight-normal text-primary"),
