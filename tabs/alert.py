@@ -108,6 +108,20 @@ ADVANCE PAYMENT TRACKER""",
                             ⭐ = After 30 Days""")
             # className="text-center font-weight-normal text-primary"),
         ], className="text-left", width={'size': 2, 'offset': 10, 'order': 0}),
+
+        dbc.Col([
+            dcc.Markdown("""
+                            BPO Approvals   ->  Next 15 days
+                             
+                            Corp. Approvals ->  Next 10 days
+                            
+                            Actual Payment  ->  Next 15 days
+                            
+                            Transit Time    ->  Next 15 days
+                            
+                            GRN Operation   ->  Next 5 days""")
+            # className="text-center font-weight-normal text-primary"),
+        ], className="text-left", width={'size': 5, 'offset': 10, 'order': 0})
     ]),
 
 
@@ -224,6 +238,9 @@ def parse_data(contents, filename):
             df['today'] = pd.to_datetime(df['today'])
 
             df['Payment Alert date'] = df['Date'] - tdelta  # alert Date
+            df['BPO Approvals'] = df['Payment Alert date'] + datetime.timedelta(days=15)
+            df['Corp. Approvals'] = df['BPO Approvals'] + datetime.timedelta(days=10)
+            df['Actual Payment Date'] = df['Corp. Approvals'] + datetime.timedelta(days=15)
 
             df['Days to Alert'] = df['Payment Alert date'] - df['today']  # days to alert
             df['Days to Alert'] = (df['Days to Alert'] / np.timedelta64(1, 'D')).astype(int)
@@ -241,7 +258,7 @@ def parse_data(contents, filename):
                                                                  )))
                                                          )
 
-            for x in ["Date", "Del/finish", "today", "Payment Alert date"]:
+            for x in ["Date", "Del/finish", "today", "Payment Alert date", "BPO Approvals", "Corp. Approvals", "Actual Payment Date"]:
                 if x in df.columns:
                     df[x] = pd.DatetimeIndex(df[x]).strftime("%Y-%m-%d")
 
@@ -254,56 +271,11 @@ def parse_data(contents, filename):
             # Assume that the user uploaded an excel file
             df = pd.read_excel(io.BytesIO(decoded), parse_dates=['Date', 'Del/finish'])
 
-            tdelta = datetime.timedelta(days=60)  # time delta
-
-            df['today'] = datetime.date.today()  # today
-            df['today'] = pd.to_datetime(df['today'])
-
-            df['Payment Alert date'] = df['Date'] - tdelta  # alert Date
-
-            df['Days to Alert'] = df['Payment Alert date'] - df['today']  # alert days
-            df['Days to Alert'] = (df['Days to Alert'] / np.timedelta64(1, 'D')).astype(int)
-
-            df['Prioritize'] = df['Days to Alert'].apply(lambda x:
-
-                                                         '⭐⭐⭐' if x < 30 and x > 0
-                                                         else (
-                                                             '⭐⭐' if x < 60 and x > 30
-                                                             else (
-                                                                 '⭐' if x < 90 and x > 60
-
-                                                                 else (' Alert is not applicable' if x < 0
-
-                                                                       else ' Alert is 3 or more  months ahead')
-                                                             )))
-
-            for x in ["Date", "Del/finish", "today", "Payment Alert date"]:
-                if x in df.columns:
-                    df[x] = pd.DatetimeIndex(df[x]).strftime("%Y-%m-%d")
-
-            df['Vendor'] = df['Vendor'].astype(str)
-        # print(df.info())
 
         elif "txt" or "tsv" in filename:
             # Assume that the user upl, delimiter = r'\s+'oaded an excel file
             df = pd.read_csv(io.StringIO(decoded.decode("utf-8")), delimiter=r"\s+", parse_dates=['Date', 'Del/finish'])
             df = pd.read_excel(io.BytesIO(decoded), parse_dates=['Date', 'Del/finish'])
-
-            tdelta = datetime.timedelta(days=60)  # time delta
-
-            df['today'] = datetime.date.today()  # today
-            df['today'] = pd.to_datetime(df['today'])
-
-            df['Payment Alert date'] = df['Date'] - tdelta  # alert Date
-
-            df['Days to Alert'] = df['Payment Alert date'] - df['today']  # alert days
-            df['Days to Alert'] = (df['Days to Alert'] / np.timedelta64(1, 'D')).astype(int)
-
-            for x in ["Date", "Del/finish", "today", "Payment Alert date"]:
-                if x in df.columns:
-                    df[x] = pd.DatetimeIndex(df[x]).strftime("%Y-%m-%d")
-
-            df['Vendor'] = df['Vendor'].astype(str)
 
     except Exception as e:
         print(e)
@@ -338,11 +310,8 @@ def update_table(contents, filename):
                     data=df.to_dict("records"),
                     columns=[
                         {'name': 'Material', 'id': 'Material', 'type': 'text', 'editable': False, 'selectable': True},
-                        {'name': 'Plus/minus', 'id': 'Plus/minus', 'type': 'text', 'editable': False, "hideable": True,
-                         "deletable": True, 'selectable': True},
-                        {'name': 'Date', 'id': 'Date', 'type': 'datetime', 'editable': False, 'selectable': True},
-                        {'name': 'Del/finish', 'id': 'Del/finish', 'type': 'datetime', 'editable': False,
-                         'selectable': True},
+                        # {'name': 'Plus/minus', 'id': 'Plus/minus', 'type': 'text', 'editable': False, "hideable": True,
+                        #  "deletable": True, 'selectable': True},
                         {'name': 'MRP elemnt', 'id': 'MRP elemnt', 'type': 'text', 'editable': False, "hideable": True,
                          'selectable': True},
                         {'name': 'MRP element data', 'id': 'MRP element data', 'type': 'text', 'editable': False,
@@ -354,12 +323,22 @@ def update_table(contents, filename):
                         {'name': 'MRPCn', 'id': 'MRPCn', 'type': 'text', 'editable': False, 'selectable': True},
                         {'name': 'Product', 'id': 'Product', 'type': 'text', 'editable': False, 'selectable': True},
                         {'name': 'PGr', 'id': 'PGr', 'type': 'text', 'editable': False, 'selectable': True},
-                        {'name': 'today', 'id': 'today', 'type': 'datetime', 'editable': False, "hideable": True,
-                         "deletable": True, 'selectable': True},
+                        # {'name': 'today', 'id': 'today', 'type': 'datetime', 'editable': False, "hideable": True,
+                        #  "deletable": True, 'selectable': True},
                         {'name': 'Payment Alert date', 'id': 'Payment Alert date', 'type': 'datetime',
                          'editable': False, 'selectable': True},
                         {'name': 'Days to Alert', 'id': 'Days to Alert', 'type': 'numeric', 'editable': False,
                          'selectable': True},
+                        {'name': 'BPO Approvals', 'id': 'BPO Approvals', 'type': 'datetime', 'editable': False,
+                         'selectable': True},
+                        {'name': 'Corp. Approvals', 'id': 'Corp. Approvals', 'type': 'datetime', 'editable': False,
+                         'selectable': True},
+                        {'name': 'Actual Payment Date', 'id': 'Actual Payment Date', 'type': 'datetime', 'editable': False,
+                         'selectable': True},
+                        {'name': 'Delivery Date', 'id': 'Date', 'type': 'datetime', 'editable': False,
+                         'selectable': True},
+                        # {'name': 'Del/finish', 'id': 'Del/finish', 'type': 'datetime', 'editable': False,
+                        #  'selectable': True},
                         {'name': 'Prioritize', 'id': 'Prioritize', 'type': 'text', 'editable': False,
                          'selectable': True},
 
