@@ -3,7 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 
 from app import app, server, dbc
-from tabs import intro, alert, projection, report, invoice
+from tabs import intro, alert, projection, report
 
 style = {'maxWidth': '960px', 'margin': 'auto'}
 
@@ -14,7 +14,6 @@ app.layout = dbc.Container([
         dcc.Tab(label='Advance Vendor Payment Alert', value='tab-alert'),
         dcc.Tab(label='Reports', value='tab-report'),
         dcc.Tab(label='Inventory Projection', value='tab-projection'),
-        dcc.Tab(label='QR Code', value='tab-invoice'),
 
     ]),
     html.Div(id='tabs-content')
@@ -27,7 +26,6 @@ def render_content(tab):
     elif tab == 'tab-alert': return alert.layout
     elif tab == 'tab-report':return report.layout
     elif tab == 'tab-projection': return projection.layout
-    elif tab == 'tab-invoice':return invoice.layout
 
 #--------------------------------------------------------------
 if __name__ == '__main__':
