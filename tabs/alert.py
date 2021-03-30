@@ -107,21 +107,16 @@ ADVANCE PAYMENT TRACKER""",
 
                             ⭐ = After 30 Days""")
             # className="text-center font-weight-normal text-primary"),
-        ], className="text-left", width={'size': 2, 'offset': 10, 'order': 0}),
+        ], className="text-left font-weight-bold text-primary border", width={'size': 2, 'offset': 9, 'order': 0}),
 
         dbc.Col([
-            dcc.Markdown("""
-                            BPO Approvals   ->  Next 15 days
-                             
-                            Corp. Approvals ->  Next 10 days
-                            
-                            Actual Payment  ->  Next 15 days
-                            
-                            Transit Time    ->  Next 15 days
-                            
-                            GRN Operation   ->  Next 5 days""")
+            dcc.Markdown("""-----------------------------
+                            BPO APPROVALS ------> CORP. APPROVALS ------> ACTUAL PAYMENT ------> TRANSIT TIME ------> GRN OPERATION
+                                           15days                  10days                 15days               5days""")
+        
+
             # className="text-center font-weight-normal text-primary"),
-        ], className="text-left", width={'size': 5, 'offset': 10, 'order': 0})
+        ], className="text-left font-weight-bold text-primary bg-secondary", width={'size': 9, 'offset': 2, 'order': 0})
     ]),
 
 
